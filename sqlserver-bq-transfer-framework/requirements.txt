@@ -1,0 +1,5 @@
+google-cloud-bigquery-datatransfer
+google-cloud-secret-manager
+google-cloud-bigquery
+PyYAML
+jsonschema

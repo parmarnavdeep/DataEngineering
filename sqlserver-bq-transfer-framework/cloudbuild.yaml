@@ -1,0 +1,36 @@
+steps:
+  - name: python:3.11
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install -r requirements.txt
+        for file in configs/*.yaml; do
+          echo "Validating $file"
+          python scripts/validate_yaml.py "$file"
+        done
+
+  - name: python:3.11
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install -r requirements.txt
+        for file in configs/*.yaml; do
+          echo "Deploying DTS transfer for $file"
+          python scripts/deploy_dts_transfer.py "$file"
+        done
+
+  - name: python:3.11
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install -r requirements.txt
+        for file in configs/*.yaml; do
+          echo "Deploying scheduled query for $file"
+          python scripts/deploy_scheduled_query.py "$file"
+        done
+
+options:
+  logging: CLOUD_LOGGING_ONLY

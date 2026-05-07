@@ -1,0 +1,30 @@
+job_name: sqlserver_customers_transfer
+enabled: true
+
+project_id: my-gcp-project
+location: us
+target_dataset: raw_sqlserver
+
+source:
+  host: "10.10.10.5"
+  port: "1433"
+  database: "SalesDB"
+  username_secret: "sqlserver-username"
+  password_secret: "sqlserver-password"
+  network_attachment: "projects/my-gcp-project/regions/us-central1/networkAttachments/sqlserver-na"
+  tls_mode: "ENCRYPT_VERIFY_NONE"
+  legacy_mapping: false
+
+transfer:
+  ingestion_type: "incremental"
+  write_mode: "WRITE_MODE_UPSERT"
+  schedule: "every 6 hours"
+
+assets:
+  - table: "SalesDB/dbo.Customers"
+    watermark_column: "updated_at"
+    primary_keys: ["customer_id"]
+
+transform:
+  enabled: false
+  query: ""
